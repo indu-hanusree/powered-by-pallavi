@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Best wishes for my Special Person❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/fireworks-js@2.10.7/dist/index.umd.js"></script>
+
+    <style>
+        :root {
+            --pink: #ff4d6d;
+            --bg: #fff0f3;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            font-family: 'Poppins', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Ensure body is relatively positioned for the fireworks container */
+            position: relative;
+            min-height: 100vh;
+        }
+
+        /* --- CSS FOR FIREWORKS CONTAINER --- */
+        #fireworks-bg {
+            position: fixed; /* Stays put even if you scroll */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Puts it BEHIND everything else */
+            pointer-events: none; /* Ensures clicks go through it to the elements below */
+            /* Added a subtle blur to make fireworks softer against the background */
+            filter: blur(1px);
+        }
+
+        /* --- 1. ENVELOPE --- */
+        #stage-1 {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            /* Added z-index to ensure it sits above fireworks */
+            z-index: 10;
+        }
+
+        .envelope {
+            width: 250px;
+            height: 160px;
+            background: var(--pink);
+            position: relative;
+            border-radius: 0 0 10px 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .envelope::before {
+            content: '';
+            position: absolute;
+            top: -90px;
+            border-left: 125px solid transparent;
+            border-right: 125px solid transparent;
+            border-bottom: 90px solid var(--pink);
+        }
+
+        .heart {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.2); }
+        }
+
+        /* --- 2. CAKE --- */
+        #stage-2 {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            /* Added z-index */
+            z-index: 10;
+        }
+
+        .cake {
+            width: 140px;
+            height: 80px;
+            background: #f4d03f;
+            border-radius: 10px 10px 0 0;
+            position: relative;
+            margin: 40px 0;
+        }
+
+        .flame {
+            width: 20px;
+            height: 30px;
+            background: #ff9d00;
+            border-radius: 50% 50% 20% 20%;
+            position: absolute;
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: pointer;
+            animation: flicker 0.2s infinite;
+            box-shadow: 0 0 20px #ff9d00;
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.8; }
+            100% { transform: translateX(-50%) scale(1.1); opacity: 1; }
+        }
+
+        /* --- 3. 8 MOMENTS GALLERY --- */
+        #stage-3 {
+            display: none;
+            padding: 40px 10px;
+            width: 100%;
+            max-width: 1100px;
+            text-align: center;
+            /* Added z-index */
+            z-index: 10;
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            align-items: start;
+        }
+
+        .polaroid {
+            background: white;
+            padding: 12px 12px 25px 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            opacity: 0;
+            transform: scale(0) rotate(-15deg);
+            transition: all 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .polaroid img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .polaroid p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.3rem;
+            text-align: center;
+            margin: 12px 0 0 0;
+            color: #333;
+        }
+
+        .pop-in {
+            opacity: 1;
+            transform: scale(1) rotate(var(--r));
+        }
+
+        .float {
+            animation: floating 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes floating {
+            from { transform: translateY(0) rotate(var(--r)); }
+            to { transform: translateY(-8px) rotate(calc(var(--r) + 1deg)); }
+        }
+
+        /* --- NEW STYLES FOR THE SPECIAL MESSAGE --- */
+        
+        .message-container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* The Button */
+        .msg-btn {
+            background: var(--pink);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-family: 'Poppins', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 77, 109, 0.3);
+            transition: transform 0.3s;
+            animation: pulse-btn 2s infinite; /* Makes it glow/pulse */
+        }
+
+        .msg-btn:hover {
+            transform: scale(1.05);
+            background: #e63950;
+        }
+
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 77, 109, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 77, 109, 0); }
+        }
+
+        /* The Hidden Message Box */
+        .hidden-message {
+            display: none; /* Hidden by default */
+            background: white;
+            width: 80%;
+            max-width: 600px;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            position: relative;
+            text-align: left;
+            border: 2px dashed var(--pink);
+        }
+
+        .hidden-message.show {
+            display: block;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden-message h2 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--pink);
+            margin-top: 0;
+        }
+        
+        .hidden-message p {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        h1 { font-family: 'Dancing Script', cursive; color: var(--pink); font-size: 2.8rem; text-align: center; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="fireworks-bg"></div>
+
+
+    <div id="stage-1" onclick="openLetter()">
+        <div class="envelope">
+            <div class="heart">❤️</div>
+        </div>
+        <h2 style="color: var(--pink); margin-top: 30px;">ENTI CHUSTHUNAV OPEN CHEY AYYA PIGGY...🐷❤️</h2>
+    </div>
+
+    <div id="stage-2">
+        <h1>Happy Birthday  Nanaluuuuu ❤️🥂 ! 🎉</h1>
+        <p>Make a wish and blow the candle!</p>
+        <div class="cake">
+            <div class="flame" id="flame" onclick="blowCandle()"></div>
+        </div>
+        <p style="color: #999; font-size: 0.9rem;">(Click the flame for more surprises)</p>
+    </div>
+
+    <div id="stage-3">
+        <h1>Lovely Moments ❤️</h1>
+        <div class="gallery" id="gallery">
+            
+            <div class="polaroid" style="--r: -3deg;">
+                <img src="https://i.ibb.co/27QRmdDX/Whats-App-Image-2026-02-02-at-6-04-35-PM.jpg" alt="Moment 1">
+                <p>Handsome 💗</p>
+            </div>
+
+            <div class="polaroid" style="--r: 2deg;">
+                <img src="https://i.ibb.co/nsNbPmW8/Whats-App-Image-2026-02-02-at-6-04-52-PM.jpg" alt="Moment 2">
+                <p>Cutiee 😅</p>
+            </div>
+
+            <div class="polaroid" style="--r: -2deg;">
+                <img src="https://i.ibb.co/5W1DGnjP/Whats-App-Image-2026-02-02-at-6-05-12-PM.jpg" alt="Moment 3">
+                <p>“Mmmmm nagarjuna ” 😄</p>
+            </div>
+
+            <div class="polaroid" style="--r: 4deg;">
+                <img src="https://i.ibb.co/35j8TKCx/Whats-App-Image-2026-02-02-at-6-05-42-PM.jpg"  alt="Moment 4">
+                <p>“I'm looking cute😌</br>Nuvvu kuda le 😁” ✈️</p>
+            </div>
+
+            <div class="polaroid" style="--r: -4deg;">
+                <img src="https://i.ibb.co/XxG7v8NM/Whats-App-Image-2026-02-02-at-6-05-54-PM.jpg" alt="Moment 5">
+                <p>❤️</p>
+            </div>
+
+            <div class="polaroid" style="--r: 3deg;">
+                <img src="https://i.ibb.co/1tcP7vjZ/Whats-App-Image-2026-02-02-at-6-06-10-PM.jpg" alt="Moment 6">
+                <p>“Mampu fellow .” 😂 </p>
+            </div>
+
+            <div class="polaroid" style="--r: -1deg;">
+                <img src="https://i.ibb.co/VWnS9pb8/Whats-App-Image-2026-02-02-at-6-45-44-PM.jpg" alt="Moment 7">
+                <p>“Cute .” 🫶🥰 </p>
+            </div>
+
+            <div class="polaroid" style="--r: 5deg;">
+                <img src="https://i.ibb.co/ymDTH9qd/Whats-App-Image-2026-02-02-at-6-45-53-PM.jpg" alt="Moment 8">
+                <p>😍... </p>
+            </div>
+
+        </div>
+
+        <h2 style="text-align:center; font-family: 'Dancing Script'; margin-top: 50px; color: var(--pink);">You are my favorite person! ❤️</h2>
+
+        <div class="message-container">
+            <button class="msg-btn" id="msgBtn" onclick="revealMessage()">There is a special message for you inside 💌</button>
+            
+            <div class="hidden-message" id="finalMsg">
+                
+                
+                <h2>My Dear Nana,</h2>
+                <p>
+                  Happiest Birthday Nanaluuuuu ❤️
+                It’s been 5 years since we became close to each other. You’re really special to me — my day feels incomplete without talking to you 💞
+Honestly, I get more excited for your birthday than my own… don’t even know why 🫂
+I’m very grateful to have you in my life 🫶
+You became Annaya to Piggy, Nanaluuu, Sundaram…💗 what not 😌😁
+Ippudu idhantha dheniki ani nuvvu anukuntav emo… nuvvu anukuntav le 😂😂
+Cheppalanipinchindhi kabatti chepthunna 😌
+Once again, Happy Birthday 🎉
+I wish I could be there with you 🤍
+May this year bring you lots of peace and joy ✨
+Love you kadha 🤍
+                </p>
+                <p>
+                    This year bring you as much joy as you bring to everyone around you🫶!
+                </p>
+                <p style="text-align: right; font-weight: 600;">
+                    With all my love,<br>PALLAVI
+                </p>
+                </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- FIREWORKS INITIALIZATION WITH MATCHING STYLES ---
+        const fireworksContainer = document.getElementById('fireworks-bg');
+        const fireworks = new Fireworks.default(fireworksContainer, {
+            autoresize: true,
+            opacity: 0.3,       // Softer opacity
+            acceleration: 1.02,
+            friction: 0.97,
+            gravity: 1.5,
+            particles: 90,      // More particles for fuller bursts
+            traceLength: 3,
+            traceSpeed: 10,
+            explosion: 6,
+            intensity: 12,      // Slightly calmer frequency
+            flickering: 50,
+            lineStyle: 'round',
+            // IMPORTANT: Hue range set to pinks, reds, and warm golds
+            hue: {
+                min: 330, // Deep pink/magenta range
+                max: 45   // Warm gold/orange range
+            },
+            delay: {
+                min: 40, // Slower pace
+                max: 80
+            },
+            brightness: {
+                min: 70, // Brighter sparks against light bg
+                max: 100
+            },
+            decay: {
+                min: 0.015,
+                max: 0.03
+            },
+            mouse: {
+                click: false,
+                move: false,
+                max: 1
+            }
+        });
+        fireworks.start();
+        // ------------------------------------
+
+
+        function openLetter() {
+            document.getElementById('stage-1').style.display = 'none';
+            document.getElementById('stage-2').style.display = 'flex';
+            confetti({ particleCount: 60, spread: 70, colors: ['#ff4d6d', '#f4d03f', '#ffffff'] });
+        }
+
+        function blowCandle() {
+            document.getElementById('flame').style.display = 'none';
+            
+            confetti({
+                particleCount: 200,
+                spread: 120,
+                origin: { y: 0.6 },
+                colors: ['#ff4d6d', '#f4d03f', '#ffffff']
+            });
+
+            setTimeout(() => {
+                document.getElementById('stage-2').style.display = 'none';
+                document.getElementById('stage-3').style.display = 'block';
+                animateMoments();
+            }, 800);
+        }
+
+        function animateMoments() {
+            const moments = document.querySelectorAll('.polaroid');
+            moments.forEach((m, index) => {
+                setTimeout(() => {
+                    m.classList.add('pop-in');
+                    setTimeout(() => { m.classList.add('float'); }, 700);
+                }, index * 400);
+            });
+        }
+
+        // --- NEW FUNCTION TO REVEAL MESSAGE ---
+        function revealMessage() {
+            // Hide the button
+            document.getElementById('msgBtn').style.display = 'none';
+            
+            // Show the text box
+            document.getElementById('finalMsg').classList.add('show');
+
+            // More Confetti for the special moment!
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.8 },
+                colors: ['#ff4d6d', '#f4d03f', '#ffffff']
+            });
+        }
+    </script>
+</body>
+</html>
+
